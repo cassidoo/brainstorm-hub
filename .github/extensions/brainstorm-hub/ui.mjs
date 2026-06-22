@@ -137,6 +137,7 @@ export function renderHtml() {
   <section id="dashboard">
     <div class="toolbar">
       <div class="grow"></div>
+      <button id="refreshBtn" title="Refresh the ideas list">&#8635; Refresh</button>
       <button class="primary" id="newBtn">+ New idea</button>
     </div>
     <div class="grid" id="ideaList"></div>
@@ -163,6 +164,7 @@ export function renderHtml() {
     banner: document.getElementById("banner"),
     finishBtn: document.getElementById("finishBtn"),
     newBtn: document.getElementById("newBtn"),
+    refreshBtn: document.getElementById("refreshBtn"),
     riffBtn: document.getElementById("riffBtn"),
     backBtn: document.getElementById("backBtn"),
     dashboard: document.getElementById("dashboard"),
@@ -302,6 +304,9 @@ export function renderHtml() {
 
   // --- events ----------------------------------------------------------
   els.newBtn.addEventListener("click", function () { post("/api/new-idea"); });
+  els.refreshBtn.addEventListener("click", function () {
+    loadList().then(function () { showToast("Refreshed"); });
+  });
   els.riffBtn.addEventListener("click", function () {
     if (currentIdeaId) post("/api/riff", { ideaId: currentIdeaId });
   });
