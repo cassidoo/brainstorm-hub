@@ -35,9 +35,11 @@ The extension lives in [`.github/extensions/brainstorm-hub/`](./.github/extensio
 | `ui.mjs` | The canvas iframe (dashboard + idea viewer). |
 | `prompts.mjs` | The brainstory interview / result / reaction prompts. |
 
-## Your ideas stay yours
+## Saving ideas
 
 Everything you save goes into `ideas/`, which is **git-ignored** (see
-[`ideas/.gitignore`](./ideas/.gitignore)). If you use this repo as a template, you get
-the hub — not anyone else's ideas. Your own ideas stay local to your machine; commit
-them yourself if you want to keep them in version control.
+[`ideas/.gitignore`](./ideas/.gitignore)). If you use this repo as a template, you
+can keep them ignored, *or* delete that file.
+
+With the file, your own ideas stay local to your machine. Without it, you can commit them
+if you want to keep them in version control.
