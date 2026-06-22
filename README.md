@@ -1,17 +1,21 @@
-# Brainstorm Hub 💭
+# Brainstorm Hub 🧠
 
-A hub for brainstorming inside the **GitHub Copilot app**. Open a session here and
-the assistant becomes a brainstorm interviewer: it asks short, probing questions to
-help you explore and clarify your own ideas. When you're done, it writes up a clean
-summary of *your* idea and saves it as a markdown document you can browse in a canvas.
+A hub for brainstorming inside the **GitHub Copilot app**.
 
-> Built around the open [brainstory prompts](https://github.com/brainstory/prompts).
+Click "Use this template" to add this repo template to your own GitHub account.
+
+Open a session here and the assistant becomes a brainstorm interviewer: it asks short,
+probing questions to help you explore and clarify your own ideas. When you're done,
+it writes up a clean summary of your idea and saves it as a markdown document
+that you can browse in a canvas in the GitHub Copilot app (or in the repo itself).
+
+This was built around the open [Brainstory prompts](https://github.com/brainstory/prompts)!
 
 ## How it works
 
 1. **Start talking.** Begin a session and just start brainstorming, or open the
    **Brainstorm Hub** canvas and press **New idea**. The assistant leads the
-   conversation, asking one concise question at a time.
+   conversation, asking one concise question at a time. Voice mode is encouraged!
 2. **Finish & save.** When you've talked it through, press **Finish & save idea**.
    The assistant turns the conversation into a *Result Document* written from your
    perspective and saves it to [`ideas/`](./ideas).
