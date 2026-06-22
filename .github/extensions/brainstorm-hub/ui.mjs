@@ -31,9 +31,8 @@ export function renderHtml() {
     border-bottom: 1px solid var(--border-color-default, #d0d7de);
   }
   .spark {
-    width: 28px; height: 28px; border-radius: 8px; flex: none;
-    background: var(--accent);
-    display: grid; place-items: center; color: #fff; font-size: 16px;
+    width: 28px; height: 28px; flex: none;
+    display: grid; place-items: center; font-size: 22px; line-height: 1;
   }
   header.top h1 {
     margin: 0; font-size: var(--text-title-large, 22px);
@@ -86,7 +85,7 @@ export function renderHtml() {
     text-align: center; color: var(--text-color-muted, #59636e);
     padding: 48px 20px; border: 1px dashed var(--border-color-default, #d0d7de); border-radius: 12px;
   }
-  .empty .spark { margin: 0 auto 12px; width: 40px; height: 40px; font-size: 22px; }
+  .empty .spark { margin: 0 auto 12px; width: 48px; height: 48px; font-size: 40px; }
 
   .doc { line-height: 1.6; }
   .doc h1 { font-size: 24px; border-bottom: 2px solid var(--accent); padding-bottom: 8px; }
@@ -117,7 +116,7 @@ export function renderHtml() {
 <body>
 <div class="wrap">
   <header class="top">
-    <div class="spark">&#10024;</div>
+    <div class="spark">🧠</div>
     <div>
       <h1>Brainstorm Hub</h1>
       <p class="sub">Think out loud. Keep the good ideas.</p>
@@ -263,7 +262,7 @@ export function renderHtml() {
       var ideas = (data && data.ideas) || [];
       if (!ideas.length) {
         els.ideaList.innerHTML =
-          '<div class="empty"><div class="spark">&#10024;</div>' +
+          '<div class="empty"><div class="spark">🧠</div>' +
           "<p><strong>No ideas yet.</strong></p>" +
           "<p>Start a brainstorm and your finished ideas show up here.</p></div>";
         return;
