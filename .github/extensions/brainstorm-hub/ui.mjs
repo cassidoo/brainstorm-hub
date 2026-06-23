@@ -12,113 +12,218 @@ export function renderHtml() {
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Brainstorm Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet" />
 <style>
-  :root { --accent: ${ACCENT}; }
+  :root {
+    --accent: #ff54a0;
+    --accent-strong: #d61f6f;
+    --accent-deep: #b81a5e;
+    --violet: #7c3aed;
+    --bg: #fdf2f8;
+    --surface: #ffffff;
+    --ink: #2b1d28;
+    --muted: #7a4d63;
+    --border: #f6d9e8;
+    --border-strong: #efc2dc;
+    --radius: 16px;
+    --radius-sm: 11px;
+    --shadow-sm: 0 1px 2px rgba(43,29,40,.05), 0 2px 6px rgba(214,31,111,.06);
+    --shadow-md: 0 6px 18px rgba(214,31,111,.12), 0 2px 6px rgba(43,29,40,.05);
+    --shadow-lg: 0 16px 44px rgba(214,31,111,.22);
+    --ring: 0 0 0 3px rgba(255,84,160,.40);
+    --ease: cubic-bezier(.22,1,.36,1);
+    --z-toast: 60;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+    --font-display: "Bricolage Grotesque", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-mono: "SFMono-Regular", Consolas, monospace;
+  }
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    background: var(--background-color-default, #ffffff);
-    color: var(--text-color-default, #1f2328);
-    font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
-    font-size: var(--text-body-medium, 14px);
-    line-height: var(--leading-body-medium, 20px);
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 20px;
+    -webkit-font-smoothing: antialiased;
   }
-  a { color: var(--accent); }
-  .wrap { max-width: 820px; margin: 0 auto; padding: 20px 18px 60px; }
+  a { color: var(--accent-strong); }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 18px 16px 64px; }
+
+  /* --- Header (dark slate app bar) --- */
   header.top {
-    display: flex; align-items: center; gap: 10px;
-    padding-bottom: 14px; margin-bottom: 18px;
-    border-bottom: 1px solid var(--border-color-default, #d0d7de);
+    display: flex; align-items: center; gap: 13px;
+    padding: 17px 20px; margin-bottom: 22px;
+    background: #17121b;
+    border: 1px solid #2c2430;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
   }
   .spark {
-    width: 28px; height: 28px; flex: none;
-    display: grid; place-items: center; font-size: 22px; line-height: 1;
+    flex: none; display: grid; place-items: center; line-height: 1;
+    font-size: 22px;
   }
+  header.top .brand { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
   header.top h1 {
-    margin: 0; font-size: var(--text-title-large, 22px);
-    font-weight: var(--font-weight-semibold, 600);
+    margin: 0; font-family: var(--font-display);
+    font-size: 20px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.12;
+    color: #fff;
   }
-  header.top .sub { margin: 0; color: var(--text-color-muted, #59636e); font-size: 12px; }
+  header.top h1 .dot { color: var(--accent); margin-left: 1px; }
+  header.top .sub { margin: 0; color: #c4b2bf; font-size: 12.5px; font-weight: 500; }
+
+  /* --- Buttons --- */
   button {
-    font: inherit; cursor: pointer; border-radius: 8px;
-    border: 1px solid var(--border-color-default, #d0d7de);
-    background: var(--background-color-default, #fff);
-    color: var(--text-color-default, #1f2328);
-    padding: 8px 14px; transition: background .12s, border-color .12s, opacity .12s;
+    font: inherit; font-weight: 600; cursor: pointer; border-radius: var(--radius-sm);
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--ink);
+    padding: 9px 15px;
+    box-shadow: var(--shadow-sm);
+    transition: transform .18s var(--ease), box-shadow .18s var(--ease),
+                border-color .18s var(--ease), background .18s var(--ease);
   }
-  button:hover:not(:disabled) { border-color: var(--accent); }
-  button:disabled { opacity: .5; cursor: not-allowed; }
+  button:hover:not(:disabled) { transform: translateY(-1px); border-color: var(--accent); box-shadow: var(--shadow-md); }
+  button:active:not(:disabled) { transform: translateY(0); }
+  button:focus-visible { outline: none; box-shadow: var(--ring); }
+  button:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; }
   button.primary {
-    background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600;
+    background: var(--accent-strong); border-color: transparent; color: #fff;
   }
-  button.primary:hover:not(:disabled) { filter: brightness(0.95); }
+  button.primary:hover:not(:disabled) { background: var(--accent-deep); }
+  #refreshBtn { background: var(--surface); color: var(--accent-strong); }
+  #refreshBtn:hover:not(:disabled) { color: var(--accent-deep); }
+
   .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 18px; }
   .toolbar .grow { flex: 1; }
 
+  /* --- Interview banner --- */
   .banner {
     display: none; align-items: center; gap: 12px;
-    background: color-mix(in srgb, var(--accent) 12%, transparent);
-    border: 1px solid var(--accent);
-    border-radius: 10px; padding: 12px 14px; margin-bottom: 18px;
+    background:
+      linear-gradient(135deg, rgba(255,84,160,.12), rgba(124,58,237,.10));
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius); padding: 13px 15px; margin-bottom: 18px;
+    box-shadow: var(--shadow-sm);
   }
   .banner.show { display: flex; }
   .banner .dot {
-    width: 9px; height: 9px; border-radius: 50%; background: var(--accent); flex: none;
-    animation: pulse 1.3s ease-in-out infinite;
+    width: 10px; height: 10px; border-radius: 50%; background: var(--accent-strong); flex: none;
+    box-shadow: 0 0 0 0 rgba(214,31,111,.45);
+    animation: pulse 1.4s ease-in-out infinite;
   }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(214,31,111,.45); opacity: 1; }
+    70% { box-shadow: 0 0 0 8px rgba(214,31,111,0); opacity: .7; }
+    100% { box-shadow: 0 0 0 0 rgba(214,31,111,0); opacity: 1; }
+  }
   .banner .txt { flex: 1; }
-  .banner .txt strong { display: block; }
-  .banner .txt span { color: var(--text-color-muted, #59636e); font-size: 12px; }
+  .banner .txt strong { display: block; color: var(--ink); }
+  .banner .txt span { color: var(--muted); font-size: 12px; }
 
-  .grid { display: grid; gap: 12px; }
+  /* --- Idea grid --- */
+  .grid { display: grid; gap: 13px; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); }
   .card {
-    text-align: left; width: 100%;
-    border: 1px solid var(--border-color-default, #d0d7de); border-radius: 12px;
-    padding: 16px; background: var(--background-color-default, #fff);
+    position: relative; overflow: hidden;
+    text-align: left; width: 100%; font: inherit; color: inherit;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 17px 18px 15px; background: var(--surface); cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s var(--ease);
+    animation: cardIn .45s var(--ease);
   }
-  .card:hover { border-color: var(--accent); }
-  .card h3 { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
-  .card .meta { color: var(--text-color-muted, #59636e); font-size: 12px; }
+  .card::before {
+    content: ""; position: absolute; top: 16px; right: 16px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--dot, var(--accent));
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--dot, var(--accent)) 18%, transparent);
+    transition: transform .2s var(--ease);
+  }
+  .card:nth-child(4n+1) { --dot: #ff54a0; }
+  .card:nth-child(4n+2) { --dot: #7c3aed; }
+  .card:nth-child(4n+3) { --dot: #f59e0b; }
+  .card:nth-child(4n+4) { --dot: #06b6d4; }
+  .card:nth-child(1) { animation-delay: .02s; }
+  .card:nth-child(2) { animation-delay: .06s; }
+  .card:nth-child(3) { animation-delay: .10s; }
+  .card:nth-child(4) { animation-delay: .14s; }
+  .card:nth-child(5) { animation-delay: .18s; }
+  .card:nth-child(6) { animation-delay: .22s; }
+  .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--border-strong); }
+  .card:hover::before { transform: scale(1.3); }
+  .card:focus-visible { outline: none; box-shadow: var(--ring); }
+  .card h3 {
+    margin: 0 0 6px; padding-right: 20px; font-family: var(--font-display);
+    font-size: 16px; font-weight: 700; letter-spacing: -0.01em; color: var(--ink);
+    text-wrap: balance;
+  }
+  .card .meta { color: var(--muted); font-size: 12px; font-weight: 500; }
 
+  /* --- Empty state --- */
   .empty {
-    text-align: center; color: var(--text-color-muted, #59636e);
-    padding: 48px 20px; border: 1px dashed var(--border-color-default, #d0d7de); border-radius: 12px;
+    grid-column: 1 / -1;
+    text-align: center; color: var(--muted);
+    padding: 46px 24px; background: var(--surface);
+    border: 1.5px dashed var(--border-strong); border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
   }
-  .empty .spark { margin: 0 auto 12px; width: 48px; height: 48px; font-size: 40px; }
+  .empty .spark { margin: 0 auto 14px; font-size: 50px; animation: float 3.2s ease-in-out infinite; }
+  .empty strong { display: block; color: var(--ink); font-family: var(--font-display); font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+  .empty p { margin: 4px 0; }
 
-  .doc { line-height: 1.6; }
-  .doc h1 { font-size: 24px; border-bottom: 2px solid var(--accent); padding-bottom: 8px; }
-  .doc h2 { font-size: 18px; margin-top: 24px; }
+  /* --- Idea document --- */
+  .doc { line-height: 1.65; }
+  .doc h1 { font-family: var(--font-display); font-size: 25px; font-weight: 800; letter-spacing: -0.02em; border-bottom: 2px solid var(--accent); padding-bottom: 10px; text-wrap: balance; }
+  .doc h2 { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin-top: 26px; }
   .doc h3 { font-size: 15px; }
   .doc code {
-    font-family: var(--font-mono, "SFMono-Regular", Consolas, monospace);
-    background: color-mix(in srgb, var(--accent) 10%, transparent);
-    padding: 1px 5px; border-radius: 4px; font-size: 12px;
+    font-family: var(--font-mono);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    color: var(--accent-deep);
+    padding: 1px 5px; border-radius: 5px; font-size: 12px;
   }
-  .doc pre { background: var(--background-color-muted, #f6f8fa); padding: 12px; border-radius: 8px; overflow: auto; }
-  .doc pre code { background: none; padding: 0; }
+  .doc pre { background: #fff4fa; border: 1px solid var(--border); padding: 12px; border-radius: 10px; overflow: auto; }
+  .doc pre code { background: none; padding: 0; color: inherit; }
   .doc blockquote {
-    margin: 0; padding-left: 14px; border-left: 3px solid var(--accent);
-    color: var(--text-color-muted, #59636e);
+    margin: 0; padding: 10px 14px; border-radius: 10px;
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    color: var(--muted);
   }
   .doc ul, .doc ol { padding-left: 22px; }
-  .back { background: none; border: none; color: var(--accent); padding: 0 0 14px; }
-  .hidden { display: none !important; }
-  .toast {
-    position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
-    background: var(--accent); color: #fff; padding: 10px 16px; border-radius: 8px;
-    font-size: 13px; opacity: 0; transition: opacity .2s; pointer-events: none;
+  .back {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: none; border: none; box-shadow: none; color: var(--accent-strong);
+    padding: 4px 0 14px; font-weight: 600;
   }
-  .toast.show { opacity: 1; }
+  .back:hover:not(:disabled) { transform: none; color: var(--accent-deep); }
+  .hidden { display: none !important; }
+
+  /* --- Toast --- */
+  .toast {
+    position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%) translateY(8px);
+    z-index: var(--z-toast);
+    background: var(--accent-strong); color: #fff; padding: 11px 17px; border-radius: var(--radius-sm);
+    font-size: 13px; font-weight: 600; box-shadow: var(--shadow-lg);
+    opacity: 0; transition: opacity .2s var(--ease), transform .2s var(--ease); pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @keyframes cardIn { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before { animation: none !important; transition: none !important; }
+    .card { opacity: 1; transform: none; }
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
-    <div class="spark">🧠</div>
-    <div>
-      <h1>Brainstorm Hub</h1>
+    <div class="brand">
+      <h1>Brainstorm Hub<span class="dot" aria-hidden="true">.</span></h1>
       <p class="sub">Think out loud. Keep the good ideas.</p>
     </div>
   </header>
@@ -265,8 +370,8 @@ export function renderHtml() {
       if (!ideas.length) {
         els.ideaList.innerHTML =
           '<div class="empty"><div class="spark">🧠</div>' +
-          "<p><strong>No ideas yet.</strong></p>" +
-          "<p>Start a brainstorm and your finished ideas show up here.</p></div>";
+          "<strong>Nothing here yet — but that's the fun part.</strong>" +
+          "<p>Kick off a brainstorm and your finished ideas land here, ready to revisit.</p></div>";
         return;
       }
       els.ideaList.innerHTML = ideas.map(function (it) {

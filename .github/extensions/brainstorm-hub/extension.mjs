@@ -207,13 +207,14 @@ async function handleRequest(req, res) {
 
     if (req.method === "POST" && path === "/api/new-idea") {
         if (workflowState !== "idle") return json(res, 409, { error: "busy", state: workflowState });
-        transcript = [];
-        riffSource = null;
-        setState("interviewing");
         sendControl(
-            "Let's start a brand-new idea. Greet me warmly and begin the brainstorm " +
-            "interview by asking what I'm working on or thinking about today. Ask one " +
-            "concise question at a time."
+            "I clicked \"New idea\" in the Brainstorm Hub. I want this brainstorm to happen " +
+            "in its own fresh session, not in this hub conversation. Use your create_session " +
+            "tool to spawn a new session in the current project (look it up with list_projects " +
+            "if needed). Give it a kickoff prompt that starts the brainstorm interview: greet " +
+            "me warmly and ask what I'm working on or thinking about today, asking one concise " +
+            "question at a time. Do NOT start interviewing here — this session stays as the hub. " +
+            "Once the new session is created, just tell me in one short line that it's ready."
         );
         return json(res, 200, { ok: true });
     }
@@ -326,7 +327,10 @@ ${INTERVIEW_PROMPT}
 ## The Brainstorm Hub canvas
 A side-panel canvas called "Brainstorm Hub" lists every saved idea and provides
 buttons that drive you:
-* "New idea" starts a fresh brainstorm.
+* "New idea" starts a fresh brainstorm in its own new session. When you receive
+  that instruction, use your create_session tool to spawn the new session with a
+  kickoff prompt that begins the interview there — this is an allowed exception to
+  the "no other tasks" rule, since it exists purely to start a brainstorm.
 * "Riff on this idea" starts a new brainstorm that builds on an existing idea.
 * "Finish & save idea" asks you to write up and save the current conversation.
 When a brainstorm begins, just follow the interview guidance above.
