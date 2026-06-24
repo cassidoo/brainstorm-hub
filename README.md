@@ -24,6 +24,9 @@ This was built around the open [Brainstory prompts](https://github.com/brainstor
 4. **Riff on an idea.** With an idea open, press **Riff on this idea** to start a new
    brainstorm that builds on it — extend it, react to specific points, or walk through
    it point by point.
+5. **Commit or step out.** Press **Commit ideas** to ask the assistant to commit saved
+   idea markdown files, or **Meta mode** when you want to ask questions or make changes
+   that are not part of a brainstorm.
 
 ## The canvas
 

@@ -95,6 +95,13 @@ export function renderHtml() {
   button.primary:hover:not(:disabled) { background: var(--accent-deep); }
   #refreshBtn { background: var(--surface); color: var(--accent-strong); }
   #refreshBtn:hover:not(:disabled) { color: var(--accent-deep); }
+  button.secondary {
+    background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+    color: var(--accent-deep);
+  }
+  button.secondary:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+  }
 
   .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 18px; }
   .toolbar .grow { flex: 1; }
@@ -194,10 +201,15 @@ export function renderHtml() {
   .doc ul, .doc ol { padding-left: 22px; }
   .back {
     display: inline-flex; align-items: center; gap: 4px;
-    background: none; border: none; box-shadow: none; color: var(--accent-strong);
-    padding: 4px 0 14px; font-weight: 600;
+    background: var(--surface); border: 1px solid var(--border-strong);
+    box-shadow: var(--shadow-sm); color: var(--accent-strong);
+    padding: 8px 12px; margin-bottom: 14px; font-weight: 600;
   }
-  .back:hover:not(:disabled) { transform: none; color: var(--accent-deep); }
+  .back:hover:not(:disabled) {
+    transform: translateY(-1px);
+    color: var(--accent-deep);
+    background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+  }
   .hidden { display: none !important; }
 
   /* --- Toast --- */
@@ -243,6 +255,8 @@ export function renderHtml() {
     <div class="toolbar">
       <div class="grow"></div>
       <button id="refreshBtn" title="Refresh the ideas list">&#8635; Refresh</button>
+      <button class="secondary" id="metaBtn" title="Ask about the canvas or do repo operations">Meta mode</button>
+      <button class="secondary" id="commitBtn" title="Commit saved ideas to the repository">Commit ideas</button>
       <button class="primary" id="newBtn">+ New idea</button>
     </div>
     <div class="grid" id="ideaList"></div>
@@ -270,6 +284,8 @@ export function renderHtml() {
     finishBtn: document.getElementById("finishBtn"),
     newBtn: document.getElementById("newBtn"),
     refreshBtn: document.getElementById("refreshBtn"),
+    metaBtn: document.getElementById("metaBtn"),
+    commitBtn: document.getElementById("commitBtn"),
     riffBtn: document.getElementById("riffBtn"),
     backBtn: document.getElementById("backBtn"),
     dashboard: document.getElementById("dashboard"),
@@ -350,6 +366,7 @@ export function renderHtml() {
     els.finishBtn.textContent = state === "finishing" ? "Saving…" : "Finish & save idea";
     els.newBtn.disabled = busy() || state === "interviewing";
     els.riffBtn.disabled = busy() || state === "interviewing";
+    els.commitBtn.disabled = busy();
   }
 
   function post(path, body) {
@@ -412,6 +429,8 @@ export function renderHtml() {
   els.refreshBtn.addEventListener("click", function () {
     loadList().then(function () { showToast("Refreshed"); });
   });
+  els.metaBtn.addEventListener("click", function () { post("/api/meta-mode"); });
+  els.commitBtn.addEventListener("click", function () { post("/api/commit-ideas"); });
   els.riffBtn.addEventListener("click", function () {
     if (currentIdeaId) post("/api/riff", { ideaId: currentIdeaId });
   });

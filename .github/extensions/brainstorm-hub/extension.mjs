@@ -32,6 +32,7 @@ const sseClients = new Set();   // open SSE response objects
 let workflowState = "idle";     // idle | interviewing | finishing | saving
 let transcript = [];            // [{ role: "H" | "A", text }]
 let riffSource = null;          // idea id this interview riffs on (if any)
+let welcomeSent = false;        // canvas-open welcome should only be shared once per session
 
 const IDEAS_DIR_NAME = "ideas";
 
@@ -219,6 +220,30 @@ async function handleRequest(req, res) {
         return json(res, 200, { ok: true });
     }
 
+    if (req.method === "POST" && path === "/api/meta-mode") {
+        sendControl(
+            "I clicked \"Meta mode\" in the Brainstorm Hub. For my next message, temporarily " +
+            "step out of brainstorm-interviewer mode so I can ask questions, improve the canvas, " +
+            "or perform repo operations. Keep the response concise and helpful, and do not treat " +
+            "this control message as part of a brainstorm transcript."
+        );
+        return json(res, 200, { ok: true });
+    }
+
+    if (req.method === "POST" && path === "/api/commit-ideas") {
+        if (workflowState === "finishing" || workflowState === "saving") {
+            return json(res, 409, { error: "busy", state: workflowState });
+        }
+        sendControl(
+            "I clicked \"Commit ideas\" in the Brainstorm Hub. Temporarily step out of " +
+            "brainstorm-interviewer mode and commit the saved idea markdown files in ideas/ to " +
+            "the current repo. First inspect git status, stage only ideas/*.md and directly " +
+            "related metadata if needed, then create a git commit with a concise message. Do not " +
+            "include unrelated files. Afterward, report the commit result briefly."
+        );
+        return json(res, 200, { ok: true });
+    }
+
     if (req.method === "POST" && path === "/api/riff") {
         if (workflowState !== "idle") return json(res, 409, { error: "busy", state: workflowState });
         const body = await readBody(req);
@@ -371,6 +396,14 @@ const hubCanvas = createCanvas({
     ],
     open: async (ctx) => {
         const url = await ensureServer();
+        if (!welcomeSent) {
+            welcomeSent = true;
+            sendControl(
+                "The Brainstorm Hub canvas is open. Share this welcome message in chat: " +
+                "Welcome to Brainstorm Hub — use the canvas to start a new idea, open saved ideas, " +
+                "commit ideas, or switch to Meta mode for non-brainstorming tasks."
+            );
+        }
         const ideaId = ctx.input && ctx.input.ideaId;
         if (ideaId) {
             const exists = await readIdea(ideaId);
