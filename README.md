@@ -37,9 +37,9 @@ The extension lives in [`.github/extensions/brainstorm-hub/`](./.github/extensio
 
 ## Saving ideas
 
-Everything you save goes into `ideas/`, which is **git-ignored** (see
-[`ideas/.gitignore`](./ideas/.gitignore)). If you use this repo as a template, you
-can keep them ignored, *or* delete that file.
+Everything you save goes into `ideas/`. If you use this repo as a template, you
+can add a `.gitignore` to the folder to keep your ideas local to your machine, but
+then they cannot be committed.
 
-With the file, your own ideas stay local to your machine. Without it, you can commit them
-if you want to keep them in version control.
+Personally: I used this repo as a template, and made a private repo based on this
+template, so that I can commit my ideas, but they stay private to me.
